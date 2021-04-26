@@ -43,6 +43,17 @@ export const loginStyles = StyleSheet.create({
     fontSize: 18,
     color: 'white',
   },
+  buttonReturn: {
+    position: 'absolute',
+    top: 50,
+    left: 20,
+    color: 'white',
+    borderWidth: 1,
+    borderColor: 'white',
+    borderRadius: 100,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+  },
   newUserContainer: {
     alignItems: 'flex-end',
     marginTop: 10,
