@@ -14,6 +14,8 @@ import {WhiteLogo} from '../components/WhiteLogo';
 import {loginStyles} from '../theme/loginTheme';
 import {useForm} from '../hooks/useForm';
 import {StackScreenProps} from '@react-navigation/stack';
+import {useContext} from 'react';
+import {AuthContext} from '../context/AuthContext';
 
 interface Props extends StackScreenProps<any, any> {}
 
@@ -23,10 +25,13 @@ export const LoginScreen = ({navigation}: Props) => {
     password: '',
   });
 
+  const {signIn} = useContext(AuthContext);
+
   const onLogin = () => {
     console.log({email, password});
     Keyboard.dismiss();
-    navigation.navigate('ProtectedScreen');
+    signIn({correo: email, password});
+    // navigation.navigate('ProtectedScreen');
   };
 
   return (
