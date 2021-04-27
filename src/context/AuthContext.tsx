@@ -55,14 +55,35 @@ export const AuthProvider = ({children}: any) => {
     });
   };
 
-  const signUp = () => {};
+  const signUp = async ({nombre, correo, password}: RegisterData) => {
+    try {
+      const resp = await cafeApi.post<LoginResponse>('/usuarios', {
+        nombre,
+        correo,
+        password,
+      });
+      dispatch({
+        type: 'signUp',
+        payload: {
+          token: resp.data.token,
+          user: resp.data.usuario,
+        },
+      });
+      await AsyncStorage.setItem('token', resp.data.token);
+    } catch (error) {
+      dispatch({
+        type: 'addError',
+        payload: error.response.data.errors[0].msg || 'Algo salio mal',
+      });
+      console.log(error.response.data.msg);
+    }
+  };
   const signIn = async ({correo, password}: LoginData) => {
     try {
       const resp = await cafeApi.post<LoginResponse>('/auth/login', {
         correo,
         password,
       });
-      console.log(resp.data);
       dispatch({
         type: 'signUp',
         payload: {
@@ -76,7 +97,7 @@ export const AuthProvider = ({children}: any) => {
         type: 'addError',
         payload: error.response.data.msg || 'Algo salio mal',
       });
-      console.log(error.response.data.msg);
+      console.log(error.response.data.errors[0].msg);
     }
   };
   const removeError = () => {

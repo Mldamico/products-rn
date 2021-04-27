@@ -1,6 +1,8 @@
 import {StackScreenProps} from '@react-navigation/stack';
-import React from 'react';
+import React, {useEffect} from 'react';
+import {useContext} from 'react';
 import {
+  Alert,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
@@ -11,6 +13,7 @@ import {
   View,
 } from 'react-native';
 import {WhiteLogo} from '../components/WhiteLogo';
+import {AuthContext} from '../context/AuthContext';
 import {useForm} from '../hooks/useForm';
 import {loginStyles} from '../theme/loginTheme';
 interface Props extends StackScreenProps<any, any> {}
@@ -20,10 +23,16 @@ export const RegisterScreen = ({navigation}: Props) => {
     email: '',
     password: '',
   });
+  const {signUp, errorMessage, removeError} = useContext(AuthContext);
+  useEffect(() => {
+    if (errorMessage.length === 0) return;
+    Alert.alert('Registro incorrecto', errorMessage, [
+      {text: 'OK', onPress: removeError},
+    ]);
+  }, [errorMessage]);
   const onRegister = () => {
-    console.log({email, password});
     Keyboard.dismiss();
-    navigation.navigate('ProtectedScreen');
+    signUp({nombre: name, correo: email, password});
   };
 
   return (
