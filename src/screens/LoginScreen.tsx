@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Alert,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
@@ -16,6 +17,7 @@ import {useForm} from '../hooks/useForm';
 import {StackScreenProps} from '@react-navigation/stack';
 import {useContext} from 'react';
 import {AuthContext} from '../context/AuthContext';
+import {useEffect} from 'react';
 
 interface Props extends StackScreenProps<any, any> {}
 
@@ -25,7 +27,14 @@ export const LoginScreen = ({navigation}: Props) => {
     password: '',
   });
 
-  const {signIn} = useContext(AuthContext);
+  const {signIn, errorMessage, removeError} = useContext(AuthContext);
+
+  useEffect(() => {
+    if (errorMessage.length === 0) return;
+    Alert.alert('Login incorrecto', errorMessage, [
+      {text: 'OK', onPress: removeError},
+    ]);
+  }, [errorMessage]);
 
   const onLogin = () => {
     console.log({email, password});

@@ -47,10 +47,18 @@ export const AuthProvider = ({children}: any) => {
         },
       });
     } catch (error) {
+      dispatch({
+        type: 'addError',
+        payload: error.response.data.msg || 'Algo salio mal',
+      });
       console.log(error.response.data.msg);
     }
   };
-  const removeError = () => {};
+  const removeError = () => {
+    dispatch({
+      type: 'removeError',
+    });
+  };
   const logout = () => {};
   return (
     <AuthContext.Provider
