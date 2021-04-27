@@ -4,7 +4,7 @@ import {StyleSheet, Text, View} from 'react-native';
 export const ProtectedScreen = () => {
   return (
     <View>
-      <Text></Text>
+      <Text>En protected</Text>
     </View>
   );
 };
