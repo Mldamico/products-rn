@@ -39,7 +39,8 @@ export const ProductsProvider = ({children}: any) => {
   ) => {};
   const deleteProduct = async (id: string) => {};
   const loadProductById = async (id: string) => {
-    throw new Error('not');
+    const resp = await cafeApi.get<Producto>(`/productos/${id}`);
+    return resp.data;
   };
   const uploadImage = async (data: any, id: string) => {};
   return (
