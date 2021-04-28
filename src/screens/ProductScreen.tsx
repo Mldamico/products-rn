@@ -3,6 +3,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import {Picker} from '@react-native-picker/picker';
 import {
   Button,
+  Image,
   ScrollView,
   StyleSheet,
   Text,
@@ -22,7 +23,7 @@ export const ProductScreen: React.FC<ProductScreenProps> = ({
   route,
   navigation,
 }) => {
-  const [selectedCategory, setSelectedCategory] = useState();
+  // const [selectedCategory, setSelectedCategory] = useState();
   const {categories, isLoading} = useCategories();
   const {id = '', name = ''} = route.params;
   const {loadProductById} = useContext(ProductsContext);
@@ -69,10 +70,8 @@ export const ProductScreen: React.FC<ProductScreenProps> = ({
         <Text style={styles.label}>Categoria:</Text>
 
         <Picker
-          selectedValue={selectedCategory}
-          onValueChange={(itemValue, itemIndex) =>
-            setSelectedCategory(itemValue)
-          }>
+          selectedValue={categoriaId}
+          onValueChange={itemValue => onChange(itemValue, 'categoriaId')}>
           {categories.map(category => (
             <Picker.Item
               key={category._id}
@@ -93,7 +92,12 @@ export const ProductScreen: React.FC<ProductScreenProps> = ({
           <View style={{marginVertical: 10}} />
           <Button title="Galeria" onPress={() => {}} />
         </View>
-        <Text>{JSON.stringify(form, null, 5)}</Text>
+        {img.length > 0 && (
+          <Image
+            source={{uri: img}}
+            style={{width: '100%', height: 300, marginTop: 50}}
+          />
+        )}
       </ScrollView>
     </View>
   );
