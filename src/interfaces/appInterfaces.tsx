@@ -43,4 +43,10 @@ export interface Producto {
 export interface Categoria {
   _id: string;
   nombre: string;
+  usuario?: Usuario;
+}
+
+export interface CategoriesResponse {
+  total: number;
+  categorias: Categoria[];
 }
