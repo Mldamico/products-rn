@@ -1,12 +1,24 @@
-import React from 'react';
+import {StackScreenProps} from '@react-navigation/stack';
+import React, {useEffect} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
+import {ProductsStackParams} from '../navigations/ProductsNavigator';
 
-interface ProductScreenProps {}
+interface ProductScreenProps
+  extends StackScreenProps<ProductsStackParams, 'ProductScreen'> {}
 
-export const ProductScreen: React.FC<ProductScreenProps> = ({}) => {
+export const ProductScreen: React.FC<ProductScreenProps> = ({
+  route,
+  navigation,
+}) => {
+  const {id, name} = route.params;
+  useEffect(() => {
+    navigation.setOptions({
+      headerTitle: name ? name : 'Nuevo Producto',
+    });
+  }, []);
   return (
     <View>
-      <Text></Text>
+      <Text>{name}</Text>
     </View>
   );
 };
