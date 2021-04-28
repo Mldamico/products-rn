@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import {createContext} from 'react';
 import {Producto} from '../interfaces/appInterfaces';
-
+import React from 'react';
 type ProductsContextProps = {
   products: Producto[];
   loadProducts: () => Promise<void>;
