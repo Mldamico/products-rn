@@ -26,7 +26,9 @@ export const ProductScreen: React.FC<ProductScreenProps> = ({
   // const [selectedCategory, setSelectedCategory] = useState();
   const {categories, isLoading} = useCategories();
   const {id = '', name = ''} = route.params;
-  const {loadProductById} = useContext(ProductsContext);
+  const {loadProductById, addProduct, updateProduct} = useContext(
+    ProductsContext,
+  );
   const {_id, categoriaId, nombre, img, form, onChange, setFormValue} = useForm(
     {
       _id: id,
@@ -38,9 +40,9 @@ export const ProductScreen: React.FC<ProductScreenProps> = ({
 
   useEffect(() => {
     navigation.setOptions({
-      headerTitle: name ? name : 'Nuevo Producto',
+      headerTitle: nombre ? nombre : 'Sin nombre del producto',
     });
-  }, []);
+  }, [nombre]);
 
   useEffect(() => {
     loadProduct();
@@ -55,6 +57,19 @@ export const ProductScreen: React.FC<ProductScreenProps> = ({
       img: product.img || '',
       nombre,
     });
+  };
+
+  const saveOrUpdate = async () => {
+    if (id.length > 0) {
+      updateProduct(categoriaId, nombre, id);
+    } else {
+      if (categoriaId.length === 0) {
+        onChange(categories[0]._id, 'categoriaId');
+      }
+      const tempCategoriaId = categoriaId || categories[0]._id;
+      const newProduct = await addProduct(tempCategoriaId, nombre);
+      onChange(newProduct._id, '_id');
+    }
   };
 
   return (
@@ -81,17 +96,21 @@ export const ProductScreen: React.FC<ProductScreenProps> = ({
           ))}
         </Picker>
 
-        <Button title="Guardar" onPress={() => {}} color="#5856D6" />
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'center',
-            marginTop: 10,
-          }}>
-          <Button title="Camara" onPress={() => {}} />
-          <View style={{marginVertical: 10}} />
-          <Button title="Galeria" onPress={() => {}} />
-        </View>
+        <Button title="Guardar" onPress={saveOrUpdate} color="#5856D6" />
+
+        {_id.length > 0 && (
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'center',
+              marginTop: 10,
+            }}>
+            <Button title="Camara" onPress={() => {}} />
+            <View style={{width: 10}} />
+            <Button title="Galeria" onPress={() => {}} />
+          </View>
+        )}
+
         {img.length > 0 && (
           <Image
             source={{uri: img}}
