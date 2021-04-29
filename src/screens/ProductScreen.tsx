@@ -28,7 +28,7 @@ export const ProductScreen: React.FC<ProductScreenProps> = ({
   // const [selectedCategory, setSelectedCategory] = useState();
   const {categories, isLoading} = useCategories();
   const {id = '', name = ''} = route.params;
-  const {loadProductById, addProduct, updateProduct} = useContext(
+  const {loadProductById, addProduct, updateProduct, uploadImage} = useContext(
     ProductsContext,
   );
   const {_id, categoriaId, nombre, img, form, onChange, setFormValue} = useForm(
@@ -85,6 +85,7 @@ export const ProductScreen: React.FC<ProductScreenProps> = ({
         if (resp.didCancel) return;
         if (!resp.uri) return;
         setTempUri(resp.uri);
+        uploadImage(resp, _id);
       },
     );
   };
