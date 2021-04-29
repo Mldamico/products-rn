@@ -10,6 +10,8 @@ import {
   TextInput,
   View,
 } from 'react-native';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+
 import {ProductsStackParams} from '../navigations/ProductsNavigator';
 
 import {useCategories} from '../hooks/useCategories';
@@ -37,6 +39,7 @@ export const ProductScreen: React.FC<ProductScreenProps> = ({
       img: '',
     },
   );
+  const [tempUri, setTempUri] = useState<string>();
 
   useEffect(() => {
     navigation.setOptions({
@@ -72,6 +75,20 @@ export const ProductScreen: React.FC<ProductScreenProps> = ({
     }
   };
 
+  const takePhoto = () => {
+    launchCamera(
+      {
+        mediaType: 'photo',
+        quality: 0.5,
+      },
+      resp => {
+        if (resp.didCancel) return;
+        if (!resp.uri) return;
+        setTempUri(resp.uri);
+      },
+    );
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -105,15 +122,22 @@ export const ProductScreen: React.FC<ProductScreenProps> = ({
               justifyContent: 'center',
               marginTop: 10,
             }}>
-            <Button title="Camara" onPress={() => {}} />
+            <Button title="Camara" onPress={takePhoto} />
             <View style={{width: 10}} />
             <Button title="Galeria" onPress={() => {}} />
           </View>
         )}
 
-        {img.length > 0 && (
+        {img.length > 0 && !tempUri && (
           <Image
             source={{uri: img}}
+            style={{width: '100%', height: 300, marginTop: 50}}
+          />
+        )}
+
+        {tempUri && (
+          <Image
+            source={{uri: tempUri}}
             style={{width: '100%', height: 300, marginTop: 50}}
           />
         )}
