@@ -90,6 +90,21 @@ export const ProductScreen: React.FC<ProductScreenProps> = ({
     );
   };
 
+  const takePhotoFromGalery = () => {
+    launchImageLibrary(
+      {
+        mediaType: 'photo',
+        quality: 0.5,
+      },
+      resp => {
+        if (resp.didCancel) return;
+        if (!resp.uri) return;
+        setTempUri(resp.uri);
+        uploadImage(resp, _id);
+      },
+    );
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -125,7 +140,7 @@ export const ProductScreen: React.FC<ProductScreenProps> = ({
             }}>
             <Button title="Camara" onPress={takePhoto} />
             <View style={{width: 10}} />
-            <Button title="Galeria" onPress={() => {}} />
+            <Button title="Galeria" onPress={takePhotoFromGalery} />
           </View>
         )}
 
